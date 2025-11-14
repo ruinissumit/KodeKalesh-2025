@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Forest Fire Monitoring</title>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #e6f5e6;
+    margin: 0;
+  }
+
+  h1 {
+    color: #0b6623;
+    margin-top: 20px;
+  }
+
+  #map {
+    height: 80vh;
+    width: 90vw;
+    max-width: 1200px;
+    margin: 20px auto;
+    border: 3px solid #0b6623;
+    border-radius: 10px;
+  }
+
+  footer {
+    margin: 20px;
+    color: #333;
+  }
+</style>
+</head>
+
+<body>
+  <h1>🌍 Global Forest Fire Monitoring System</h1>
+  <p>Shows real forest locations, temperature & fire risk alert</p>
+
+  <div id="map"></div>
+
+  <footer>Developed by: <b>Z CODERS</b> | kodekalesh project</footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    // Initialize Map
+    var map = L.map('map').setView([20, 0], 2);
+
+    // Add OpenStreetMap Layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Forest Data: name, lat, lon, temperature
+    const forests = [
+      { name: "Amazon Rainforest", lat: -3.4653, lon: -62.2159, temp: 52 },
+      { name: "Congo Rainforest", lat: -1.4419, lon: 15.5560, temp: 47 },
+      { name: "Daintree Rainforest", lat: -16.1717, lon: 145.4185, temp: 32 },
+      { name: "Tongass National Forest", lat: 56.5, lon: -132.5, temp: 12 },
+      { name: "Valdivian Temperate Rainforest", lat: -41.5, lon: -73.0, temp: 28 },
+      { name: "Sundarbans", lat: 21.9497, lon: 89.1833, temp: 49 },
+      { name: "Kinabalu Park", lat: 6.0833, lon: 116.55, temp: 34 },
+      { name: "Monteverde Cloud Forest", lat: 10.3, lon: -84.8, temp: 26 },
+      { name: "Sinharaja Forest Reserve", lat: 6.4167, lon: 80.4167, temp: 35 },
+      { name: "Tropical Andes Forest", lat: -13.52, lon: -71.97, temp: 27 },
+      { name: "Mekong Rainforest", lat: 15.8700, lon: 100.9925, temp: 38 },
+      { name: "Borneo Rainforest", lat: 0.7893, lon: 113.9213, temp: 40 },
+      { name: "Eastern Ghats Forest", lat: 17.3660, lon: 82.55, temp: 37 },
+      { name: "Western Ghats Forest", lat: 10.1920, lon: 76.6394, temp: 41 },
+      { name: "Annamite Range Forest", lat: 17.5, lon: 106.3, temp: 39 },
+      { name: "Madagascar Rainforest", lat: -18.7669, lon: 46.8691, temp: 42 },
+      { name: "Cerrado Forest", lat: -15.7801, lon: -47.9292, temp: 45 },
+      { name: "Atlantic Forest (Brazil)", lat: -22.9068, lon: -43.1729, temp: 48 },
+      { name: "New Guinea Rainforest", lat: -6.3149, lon: 143.9555, temp: 33 },
+      { name: "Sierra Madre Forest", lat: 17.5, lon: -99.5, temp: 43 },
+      { name: "Appalachian Forest", lat: 37.5, lon: -81.0, temp: 19 },
+      { name: "Taiga (Siberia)", lat: 60.0, lon: 105.0, temp: 10 },
+      { name: "Rocky Mountain Forest", lat: 39.5501, lon: -105.7821, temp: 21 },
+      { name: "Great Smoky Mountains", lat: 35.6118, lon: -83.4895, temp: 22 },
+      { name: "Bwindi Impenetrable Forest", lat: -1.0, lon: 29.7, temp: 36 },
+      { name: "Gunung Leuser National Park", lat: 3.5, lon: 97.5, temp: 39 },
+      { name: "Alerce Costero National Park", lat: -40.2, lon: -73.4, temp: 23 },
+      { name: "Taman Negara", lat: 4.7167, lon: 102.4667, temp: 37 },
+      { name: "Congo Basin", lat: -2.8797, lon: 23.6560, temp: 46 },
+      { name: "Blue Mountains", lat: -33.7, lon: 150.3, temp: 29 }
+    ];
+
+    // Add Markers
+    forests.forEach(forest => {
+      let color = forest.temp >= 50 ? 'red' : forest.temp >= 35 ? 'orange' : 'green';
+      let risk = forest.temp >= 50 ? '🔥 High Risk' : forest.temp >= 35 ? '⚠️ Moderate Risk' : '✅ Safe';
+
+      const icon = L.divIcon({
+        className: 'forest-icon',
+        html: `<div style="font-size:22px; color:${color};">🌳</div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      });
+
+      L.marker([forest.lat, forest.lon], { icon: icon })
+        .addTo(map)
+        .bindPopup(`<b>${forest.name}</b><br>🌡️ Temperature: ${forest.temp}°C<br>${risk}`);
+    });
+  </script>
+</body>
+</html>
